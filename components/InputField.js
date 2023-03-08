@@ -1,27 +1,26 @@
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, View, TextInput, TouchableOpacity, } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import { addTask } from '../state_management/reducers/task';
 
+export default TaskInputField = () => {
 
-export default TaskInputField = (props) => {
-    const [task, setTask] = useState();
+    const dispatch = useDispatch();
+    const [task, setTask] = useState(null);
 
-    // addToDo = async (name) => {
-    //     try {
-    //         await firebase.firestore().collection('task').add({
-    //             name: name,
-    //             complete: false,
-    //         });
-    //         setTask(null);
+    const createTask = async () => {
 
-    //     } catch (error) {
-    //         alert(error.message);
-    //     }
-    // }
+        if (task == null) return;
 
-    const handleAddTask = (value) => {
-        props.addTask(value);
+        try {
+            dispatch(addTask({ name: task }));
+        } catch (error) {
+            alert(error.message);
+        }
         setTask(null);
+        // Keyboard.dismiss();
+        
     }
 
     return (
@@ -29,8 +28,14 @@ export default TaskInputField = (props) => {
             behavior={ Platform.OS === "ios" ? "padding" : "height" }
             style={ styles.container }
         >
-            <TextInput style={ styles.inputField } value={ task } onChangeText={ text => setTask(text) } placeholder={ 'Write a task' } placeholderTextColor={ '#fff' } />
-            <TouchableOpacity onPress={ () => handleAddTask(task) }>
+            <TextInput 
+                style={ styles.inputField } 
+                value={ task } 
+                onChangeText={ text => setTask(text) } 
+                placeholder={ 'Write a task' } 
+                placeholderTextColor={ '#fff' }
+            />
+            <TouchableOpacity onPress={ () => createTask(task) }>
                 <View style={ styles.button }>
                     <MaterialIcons name="keyboard-arrow-up" size={ 24 } color="black" />
                 </View>

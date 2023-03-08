@@ -3,7 +3,7 @@ import TaskInputField from './InputField';
 import TaskItem from './TaskItem';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { allTasks, addTask, selectTask, deleteTask } from '../state_management/reducers/task';
+import { allTasks, addTask, selectTask } from '../state_management/reducers/task';
 
 export default function () {
 
@@ -12,23 +12,6 @@ export default function () {
     useEffect(() => {
         dispatch(allTasks());
     }, []);
-
-    const addTask = async (task) => {
-
-        if (task == null) return;
-
-        try {
-            
-            dispatch(addTask({
-                name: task
-            }));
-
-        } catch (error) {
-            alert(error.message);
-        }
-        // Keyboard.dismiss();
-        
-    }
 
     return (
         <View style={styles.container}>
@@ -44,7 +27,7 @@ export default function () {
                     }) : null
                 }
             </ScrollView>
-            <TaskInputField addTask={addTask} />
+            <TaskInputField />
         </View>
     );
 
